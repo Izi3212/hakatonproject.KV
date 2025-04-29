@@ -57,10 +57,10 @@
         radial-gradient(circle at bottom right, rgba(75, 0, 130, 0.2) 0%, transparent 30%);
     }
     .card {
-      perspective: 1000px;
+      perspective: 1300px;
       transition: transform 0.3s;
       animation: slideUp 0.5s ease-out forwards;
-      width: clamp(14rem, 85vw, 16rem);
+      width: clamp(16rem, 85vw, 20rem);
       height: clamp(16rem, 40vw, 18rem);
       margin: 0 auto;
     }
@@ -90,7 +90,7 @@
     }
     .card-container {
       position: relative;
-      padding: 0.5rem;
+      padding: 3rem;
       border-radius: 12px;
       z-index: 5;
       display: flex;
@@ -104,7 +104,7 @@
       gap: 0.75rem;
       padding: 1rem;
       width: 100%;
-      max-width: 1080px;
+      max-width: 1500px;
       margin: 0 auto;
       justify-items: center;
       align-items: center;
@@ -150,7 +150,7 @@
     .card-front h2, .card-back p {
       font-family: 'Poppins', sans-serif;
       font-weight: 800;
-      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      font-size: clamp(0.5rem, 2.2vw, 1.2rem);
     }
     .card-front {
       background: var(--card-front-bg);
@@ -317,7 +317,7 @@
       position: fixed;
       top: 0;
       right: 0;
-      width: clamp(4rem, 15vw, 5rem);
+      width: clamp(2rem, 15vw, 4rem);
       height: 100%;
       background: var(--panel-bg);
       display: flex;
@@ -363,7 +363,7 @@
     .toggle-switch {
       position: relative;
       display: inline-block;
-      width: clamp(3.5rem, 10vw, 4rem);
+      width: clamp(3.75rem, 10vw, 2rem);
       height: clamp(2rem, 6vw, 2.25rem);
     }
     .toggle-switch input {
@@ -400,10 +400,10 @@
     .slider:before {
       position: absolute;
       content: "";
-      height: clamp(1.5rem, 4vw, 1.75rem);
-      width: clamp(1.5rem, 4vw, 1.75rem);
+      height: clamp(1.75rem, 4vw, 1rem);
+      width: clamp(1.75rem, 4vw, 1rem);
       left: 0.25rem;
-      bottom: 0.25rem;
+      bottom: 0.17.5rem;
       background-color: #FFD700;
       transition: 0.4s;
       border-radius: 50%;
@@ -459,11 +459,11 @@
     <label class="toggle-switch">
       <input type="checkbox" id="theme-toggle" onchange="toggleTheme()">
       <span class="slider theme-slider">
-        <svg class="sun-yellow" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg class="sun-yellow" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z" fill="currentColor"/>
           <path d="M12 2V4M12 20V22M4 12H2M22 12H20M6.34 6.34L4.93 4.93M19.07 19.07L17.66 17.66M6.34 17.66L4.93 19.07M19.07 4.93L17.66 6.34" stroke="currentColor" stroke-width="2"/>
         </svg>
-        <svg class="sun-purple" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg class="sun-purple" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z" fill="currentColor"/>
           <path d="M12 2V4M12 20V22M4 12H2M22 12H20M6.34 6.34L4.93 4.93M19.07 19.07L17.66 17.66M6.34 17.66L4.93 19.07M19.07 4.93L17.66 6.34" stroke="currentColor" stroke-width="2"/>
         </svg>
@@ -537,7 +537,6 @@
   <div class="futuristic-line right"></div>
 
   <h1 class="title" data-ru="Формулы Алгебры" data-en="Algebra Formulas">Формулы Алгебры</h1>
-
   <!-- Cards -->
   <div class="grid">
     <div class="card-container">
@@ -600,16 +599,6 @@
       <button onclick="calculateDiscriminant()" data-ru="Рассчитать" data-en="Calculate">Рассчитать</button>
     </div>
     <div class="result-field" id="result"></div>
-  </div>
-
-  <!-- AI Chatbot -->
-  <div class="chatbot mt-12 text-center w-full px-4">
-    <h2 class="text-2xl mb-4" data-ru="AI Ассистент по Алгебре" data-en="AI Algebra Assistant">AI Ассистент по Алгебре</h2>
-    <div class="flex">
-      <input type="text" id="chat-input" placeholder="Задайте вопрос по алгебре..." data-ru-placeholder="Задайте вопрос по алгебре..." data-en-placeholder="Ask a question about algebra...">
-      <button onclick="sendChatMessage()" data-ru="Отправить" data-en="Send">Отправить</button>
-    </div>
-    <div class="chat-field" id="chat-field"></div>
   </div>
 
   <!-- Footer -->
