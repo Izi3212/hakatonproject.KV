@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Формулы Алгебры</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <!-- MathJax CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+  <style>
+    :root {
+      --bg-color: #1F2937;
+      --text-color: #FFD700;
+      --card-front-bg: #374151;
+      --card-back-bg: #4B5563;
+      --border-color: #FFD700;
+      --gradient-start: #FFD700;
+      --gradient-end: #FBBF24;
+      --symbol-color: #FFD700;
+      --particle-start: #FFD700;
+      --particle-end: #1a1a1a;
+      --line-color: #FFD700;
+      --panel-bg: #1F2937;
+    }
+    .theme-light {
+      --bg-color: #E5E7EB;
+      --text-color: #4B0082;
+      --card-front-bg: #F9FAFB;
+      --card-back-bg: #E5E7EB;
+      --border-color: #4B0082;
+      --gradient-start: #4B0082;
+      --gradient-end: #7B3FAD;
+      --symbol-color: #4B0082;
+      --particle-start: #4B0082;
+      --particle-end: #D1D5DB;
+      --line-color: #4B0082;
+      --panel-bg: #E5E7EB;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-image: 
+        radial-gradient(circle at top left, rgba(255, 215, 0, 0.2) 0%, transparent 30%),
+        radial-gradient(circle at bottom right, rgba(255, 215, 0, 0.2) 0%, transparent 30%);
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      position: relative;
+      overflow-x: hidden;
+      transition: background-color 0.3s, color 0.3s;
+      font-size: clamp(16px, 2.5vw, 18px);
+    }
+    .theme-light body {
+      background-image: 
+        radial-gradient(circle at top left, rgba(75, 0, 130, 0.2) 0%, transparent 30%),
+        radial-gradient(circle at bottom right, rgba(75, 0, 130, 0.2) 0%, transparent 30%);
+    }
+    .card {
+      perspective: 1000px;
+      transition: transform 0.3s;
+      animation: slideUp 0.5s ease-out forwards;
+      width: clamp(14rem, 85vw, 16rem);
+      height: clamp(16rem, 40vw, 18rem);
+      margin: 0 auto;
+    }
+    .card-inner {
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+      width: 100%;
+      height: 100%;
+    }
+    .card.flipped .card-inner {
+      transform: rotateY(180deg);
+    }
+    .card-front, .card-back {
+      backface-visibility: hidden;
+      width: 100%;
+      height: 100%;
+    }
+    .card-back {
+      transform: rotateY(180deg);
+    }
+    .card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
+    }
+    .theme-light .card:hover {
+      box-shadow: 0 0 20px rgba(75, 0, 130, 0.7);
+    }
+    .card-container {
+      position: relative;
+      padding: 0.5rem;
+      border-radius: 12px;
+      z-index: 5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+      gap: 0.75rem;
+      padding: 1rem;
+      width: 100%;
+      max-width: 1080px;
+      margin: 0 auto;
+      justify-items: center;
+      align-items: center;
+    }
+    @media (max-width: 640px) {
+      .grid {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+        padding: 0.5rem;
+      }
+      .card {
+        width: clamp(12rem, 90vw, 14rem);
+        height: clamp(14rem, 45vw, 16rem);
+      }
+      .card-container {
+        padding: 0.25rem;
+      }
+    }
+    @media (min-width: 768px) and (max-width: 1023px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (min-width: 1024px) {
+      .grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+    .title {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 800;
+      background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: fadeIn 1s ease-in;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      line-height: 1.5;
+      padding-bottom: 0.5rem;
+      font-size: clamp(2rem, 8vw, 3rem);
+      margin-bottom: clamp(2rem, 5vw, 3rem);
+      text-align: center;
+    }
+    .card-front h2, .card-back p {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 800;
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+    }
+    .card-front {
+      background: var(--card-front-bg);
+      border: 2px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      border-radius: 12px;
+    }
+    .card-back {
+      background: var(--card-back-bg);
+      border: 2px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      border-radius: 12px;
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .card-container:nth-child(1) .card { animation-delay: 0.1s; }
+    .card-container:nth-child(2) .card { animation-delay: 0.2s; }
+    .card-container:nth-child(3) .card { animation-delay: 0.3s; }
+    .card-container:nth-child(4) .card { animation-delay: 0.4s; }
+    .math-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      opacity: 0.1;
+      z-index: -1;
+    }
+    .math-bg span {
+      position: absolute;
+      color: var(--symbol-color);
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      animation: float 20s linear forwards;
+    }
+    @keyframes float {
+      0% { transform: translateY(0); opacity: 0.5; }
+      50% { opacity: 0.8; }
+      100% { transform: translateY(-100vh); opacity: 0.2; }
+    }
+    .particles {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: var(--particle-start);
+      border-radius: 50%;
+      animation: particleMove 6s linear infinite;
+      opacity: 0;
+    }
+    @keyframes particleMove {
+      0% { opacity: 0.5; background: var(--particle-start); }
+      50% { opacity: 0.8; background: var(--particle-start); }
+      100% { opacity: 0; background: var(--particle-end); transform: translate(100px, -100px); }
+    }
+    .futuristic-line {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: var(--line-color);
+      animation: pulse 3s ease-in-out infinite;
+      z-index: -1;
+    }
+    .futuristic-line.left {
+      left: 5%;
+    }
+    .futuristic-line.right {
+      right: 5%;
+    }
+    @keyframes pulse {
+      0% { opacity: 0.2; }
+      50% { opacity: 0.4; }
+      100% { opacity: 0.2; }
+    }
+    .calculator input, .chatbot input {
+      background: var(--card-back-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-color);
+      padding: 0.5rem;
+      border-radius: 4px;
+      width: clamp(4rem, 20vw, 5rem);
+      font-size: clamp(0.875rem, 2.5vw, 1rem);
+      transition: border-color 0.3s;
+    }
+    .chatbot input {
+      width: 100%;
+      max-width: 100%;
+    }
+    .calculator input:focus, .chatbot input:focus {
+      border-color: var(--gradient-end);
+      outline: none;
+    }
+    .calculator button, .chatbot button {
+      background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+      color: #1a1a1a;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: clamp(0.875rem, 2.5vw, 1rem);
+      transition: background 0.3s;
+      min-width: clamp(5rem, 15vw, 6rem);
+    }
+    .theme-light .calculator button, .theme-light .chatbot button {
+      color: #F9FAFB;
+    }
+    .calculator button:hover, .chatbot button:hover {
+      background: linear-gradient(to right, var(--gradient-end), var(--gradient-start));
+    }
+    .calculator .result-field, .chatbot .chat-field {
+      background: var(--card-back-bg);
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      padding: 0.75rem;
+      margin-top: 1rem;
+      min-height: 3.75rem;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+      text-align: left;
+      color: var(--text-color);
+      max-height: 18rem;
+      overflow-y: auto;
+      font-size: clamp(0.875rem, 2.5vw, 1rem);
+    }
+    .chatbot .chat-message {
+      margin-bottom: 0.5rem;
+      padding: 0.5rem;
+      border-radius: 4px;
+    }
+    .chatbot .user-message {
+      background: var(--card-front-bg);
+      align-self: flex-end;
+      max-width: 80%;
+    }
+    .chatbot .bot-message {
+      background: var(--panel-bg);
+      align-self: flex-start;
+      max-width: 80%;
+    }
+    .calculator h2, .chatbot h2 {
+      background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-size: clamp(1.25rem, 4vw, 1.5rem);
+      margin-bottom: 1rem;
+    }
+    .sidebar {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: clamp(4rem, 15vw, 5rem);
+      height: 100%;
+      background: var(--panel-bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.25rem;
+      border-left: 2px solid var(--border-color);
+      border-top-left-radius: 12px;
+      border-bottom-left-radius: 12px;
+      z-index: 10;
+      transition: right 0.3s;
+    }
+    @media (max-width: 767px) {
+      .grid {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+        padding: 0.5rem;
+      }
+      .sidebar {
+        right: clamp(-5rem, -15vw, -4rem);
+      }
+      .sidebar.open {
+        right: 0;
+      }
+    }
+    .sidebar-toggle {
+      display: none;
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 20;
+      padding: 0.5rem;
+      background: var(--card-back-bg);
+      border-radius: 50%;
+      color: var(--text-color);
+    }
+    @media (max-width: 767px) {
+      .sidebar-toggle {
+        display: block;
+      }
+    }
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: clamp(3.5rem, 10vw, 4rem);
+      height: clamp(2rem, 6vw, 2.25rem);
+    }
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      transition: 0.4s;
+      border-radius: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 0.5rem;
+    }
+    .theme-slider {
+      background: linear-gradient(to right, #4B5563 0%, #6B7280 50%, #D1D5DB 100%);
+    }
+    .theme-slider.checked {
+      background: linear-gradient(to right, #D1D5DB 0%, #6B7280 50%, #4B5563 100%);
+    }
+    .language-slider {
+      background: linear-gradient(to right, #4B5563 0%, #5B2F7D 50%, #7B3FAD 100%);
+    }
+    .language-slider.checked {
+      background: linear-gradient(to right, #7B3FAD 0%, #5B2F7D 50%, #4B5563 100%);
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: clamp(1.5rem, 4vw, 1.75rem);
+      width: clamp(1.5rem, 4vw, 1.75rem);
+      left: 0.25rem;
+      bottom: 0.25rem;
+      background-color: #FFD700;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+    .theme-light .slider:before {
+      background-color: #4B0082;
+    }
+    input:checked + .slider:before {
+      transform: translateX(clamp(1.5rem, 4vw, 1.75rem));
+    }
+    .slider svg, .slider span {
+      font-size: clamp(0.875rem, 2.5vw, 1rem);
+      color: #F9FAFB;
+    }
+    .theme-slider svg.sun-yellow {
+      fill: #FFD700;
+    }
+    .theme-slider svg.sun-purple {
+      fill: #4B0082;
+    }
+    .language-slider span {
+      font-size: clamp(0.75rem, 2vw, 0.875rem);
+      font-weight: 600;
+    }
+    .calculator .flex, .chatbot .flex {
+      flex-direction: column;
+      gap: 0.5rem;
+      align-items: stretch;
+    }
+    @media (min-width: 640px) {
+      .calculator .flex, .chatbot .flex {
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+    footer {
+      font-size: clamp(0.75rem, 2vw, 0.875rem);
+      padding: 1rem 0;
+    }
+  </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen">
+  <!-- Sidebar Toggle Button -->
+  <button class="sidebar-toggle" onclick="toggleSidebar()">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" stroke-width="2"/>
+    </svg>
+  </button>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <label class="toggle-switch">
+      <input type="checkbox" id="theme-toggle" onchange="toggleTheme()">
+      <span class="slider theme-slider">
+        <svg class="sun-yellow" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z" fill="currentColor"/>
+          <path d="M12 2V4M12 20V22M4 12H2M22 12H20M6.34 6.34L4.93 4.93M19.07 19.07L17.66 17.66M6.34 17.66L4.93 19.07M19.07 4.93L17.66 6.34" stroke="currentColor" stroke-width="2"/>
+        </svg>
+        <svg class="sun-purple" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z" fill="currentColor"/>
+          <path d="M12 2V4M12 20V22M4 12H2M22 12H20M6.34 6.34L4.93 4.93M19.07 19.07L17.66 17.66M6.34 17.66L4.93 19.07M19.07 4.93L17.66 6.34" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      </span>
+    </label>
+    <label class="toggle-switch">
+      <input type="checkbox" id="language-toggle" onchange="toggleLanguage()">
+      <span class="slider language-slider">
+        <span>RU</span>
+        <span>EN</span>
+      </span>
+    </label>
+  </div>
+
+  <!-- Math Background -->
+  <div class="math-bg">
+    <span style="left: 1%; top: 2%;">π</span>
+    <span style="left: 7%; top: 10%;">∑</span>
+    <span style="left: 13%; top: 18%;">∞</span>
+    <span style="left: 19%; top: 26%;">∫</span>
+    <span style="left: 25%; top: 34%;">σ</span>
+    <span style="left: 31%; top: 42%;">Δ</span>
+    <span style="left: 37%; top: 50%;">θ</span>
+    <span style="left: 43%; top: 58%;">√</span>
+    <span style="left: 49%; top: 66%;">α</span>
+    <span style="left: 55%; top: 74%;">β</span>
+    <span style="left: 61%; top: 82%;">γ</span>
+    <span style="left: 67%; top: 90%;">λ</span>
+    <span style="left: 73%; top: 5%;">φ</span>
+    <span style="left: 79%; top: 15%;">ψ</span>
+    <span style="left: 85%; top: 25%;">ω</span>
+    <span style="left: 91%; top: 35%;">ε</span>
+    <span style="left: 97%; top: 45%;">ζ</span>
+    <span style="left: 4%; top: 55%;">η</span>
+    <span style="left: 10%; top: 65%;">κ</span>
+    <span style="left: 16%; top: 75%;">μ</span>
+    <span style="left: 22%; top: 85%;">ν</span>
+    <span style="left: 28%; top: 95%;">ρ</span>
+    <span style="left: 34%; top: 20%;">τ</span>
+    <span style="left: 40%; top: 30%;">χ</span>
+    <span style="left: 46%; top: 40%;">ξ</span>
+    <span style="left: 52%; top: 50%;">ι</span>
+    <span style="left: 58%; top: 60%;">ο</span>
+    <span style="left: 64%; top: 70%;">υ</span>
+    <span style="left: 70%; top: 80%;">δ</span>
+    <span style="left: 76%; top: 90%;">Γ</span>
+  </div>
+
+  <!-- Particles -->
+  <div class="particles">
+    <div class="particle" style="left: 4%; top: 4%; animation-delay: 0s;"></div>
+    <div class="particle" style="left: 5%; top: 5%; animation-delay: 0.5s;"></div>
+    <div class="particle" style="left: 6%; top: 6%; animation-delay: 1s;"></div>
+    <div class="particle" style="left: 3%; top: 7%; animation-delay: 1.5s;"></div>
+    <div class="particle" style="left: 7%; top: 3%; animation-delay: 2s;"></div>
+    <div class="particle" style="left: 2%; top: 6%; animation-delay: 2.5s;"></div>
+    <div class="particle" style="left: 6%; top: 4%; animation-delay: 3s;"></div>
+    <div class="particle" style="left: 5%; top: 8%; animation-delay: 3.5s;"></div>
+    <div class="particle" style="right: 4%; bottom: 4%; animation-delay: 0s;"></div>
+    <div class="particle" style="right: 5%; bottom: 5%; animation-delay: 0.5s;"></div>
+    <div class="particle" style="right: 6%; bottom: 6%; animation-delay: 1s;"></div>
+    <div class="particle" style="right: 3%; bottom: 7%; animation-delay: 1.5s;"></div>
+    <div class="particle" style="right: 7%; bottom: 3%; animation-delay: 2s;"></div>
+    <div class="particle" style="right: 2%; bottom: 6%; animation-delay: 2.5s;"></div>
+    <div class="particle" style="right: 6%; bottom: 4%; animation-delay: 3s;"></div>
+    <div class="particle" style="right: 5%; bottom: 8%; animation-delay: 3.5s;"></div>
+  </div>
+
+  <!-- Futuristic Lines -->
+  <div class="futuristic-line left"></div>
+  <div class="futuristic-line right"></div>
+
+  <h1 class="title" data-ru="Формулы Алгебры" data-en="Algebra Formulas">Формулы Алгебры</h1>
+
+  <!-- Cards -->
+  <div class="grid">
+    <div class="card-container">
+      <div class="card">
+        <div class="card-inner relative">
+          <div class="card-front absolute rounded-lg shadow-lg">
+            <h2 class="text-xl text-center px-4" data-ru="Дискриминант" data-en="Discriminant">Дискриминант</h2>
+          </div>
+          <div class="card-back absolute rounded-lg shadow-lg p-4">
+            <p class="text-base text-center" data-ru="\[ D = b^2 - 4ac \]<br>Определяет количество корней квадратного уравнения." data-en="\[ D = b^2 - 4ac \]<br>Determines the number of roots of a quadratic equation.">\[ D = b^2 - 4ac \]<br>Определяет количество корней квадратного уравнения.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-container">
+      <div class="card">
+        <div class="card-inner relative">
+          <div class="card-front absolute rounded-lg shadow-lg">
+            <h2 class="text-xl text-center px-4" data-ru="Квадратное уравнение" data-en="Quadratic Equation">Квадратное уравнение</h2>
+          </div>
+          <div class="card-back absolute rounded-lg shadow-lg p-4">
+            <p class="text-base text-center" data-ru="\[ ax^2 + bx + c = 0 \]<br>Стандартная форма квадратного уравнения." data-en="\[ ax^2 + bx + c = 0 \]<br>Standard form of a quadratic equation.">\[ ax^2 + bx + c = 0 \]<br>Стандартная форма квадратного уравнения.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-container">
+      <div class="card">
+        <div class="card-inner relative">
+          <div class="card-front absolute rounded-lg shadow-lg">
+            <h2 class="text-xl text-center px-4" data-ru="Теорема Виета" data-en="Vieta’s Theorem">Теорема Виета</h2>
+          </div>
+          <div class="card-back absolute rounded-lg shadow-lg p-4">
+            <p class="text-base text-center" data-ru="\[ x_1 + x_2 = -\frac{b}{a}, \ x_1x_2 = \frac{c}{a} \]<br>Связь корней и коэффициентов." data-en="\[ x_1 + x_2 = -\frac{b}{a}, \ x_1x_2 = \frac{c}{a} \]<br>Relationship between roots and coefficients.">\[ x_1 + x_2 = -\frac{b}{a}, \ x_1x_2 = \frac{c}{a} \]<br>Связь корней и коэффициентов.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-container">
+      <div class="card">
+        <div class="card-inner relative">
+          <div class="card-front absolute rounded-lg shadow-lg">
+            <h2 class="text-xl text-center px-4" data-ru="Арифметическая прогрессия" data-en="Arithmetic Progression">Арифметическая прогрессия</h2>
+          </div>
+          <div class="card-back absolute rounded-lg shadow-lg p-4">
+            <p class="text-base text-center" data-ru="\[ a_n = a_1 + (n-1)d \]<br>Формула n-го члена прогрессии." data-en="\[ a_n = a_1 + (n-1)d \]<br>Formula for the nth term of the progression.">\[ a_n = a_1 + (n-1)d \]<br>Формула n-го члена прогрессии.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Discriminant Calculator -->
+  <div class="calculator mt-12 text-center px-4">
+    <h2 class="text-2xl mb-4" data-ru="Калькулятор дискриминанта" data-en="Discriminant Calculator">Калькулятор дискриминанта</h2>
+    <div class="flex">
+      <input type="number" id="a" placeholder="a" step="any">
+      <input type="number" id="b" placeholder="b" step="any">
+      <input type="number" id="c" placeholder="c" step="any">
+      <button onclick="calculateDiscriminant()" data-ru="Рассчитать" data-en="Calculate">Рассчитать</button>
+    </div>
+    <div class="result-field" id="result"></div>
+  </div>
+
+  <!-- AI Chatbot -->
+  <div class="chatbot mt-12 text-center w-full px-4">
+    <h2 class="text-2xl mb-4" data-ru="AI Ассистент по Алгебре" data-en="AI Algebra Assistant">AI Ассистент по Алгебре</h2>
+    <div class="flex">
+      <input type="text" id="chat-input" placeholder="Задайте вопрос по алгебре..." data-ru-placeholder="Задайте вопрос по алгебре..." data-en-placeholder="Ask a question about algebra...">
+      <button onclick="sendChatMessage()" data-ru="Отправить" data-en="Send">Отправить</button>
+    </div>
+    <div class="chat-field" id="chat-field"></div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="mt-16 w-full py-4 text-center border-t-2" style="background: var(--card-front-bg); border-color: var(--border-color);">
+    <p data-ru="Создано для изучения алгебры | AI Хакатон 2025" data-en="Created for learning algebra | AI Hackathon 2025">Создано для изучения алгебры | AI Хакатон 2025</p>
+  </footer>
+
+  <script>
+    // Translations
+    const translations = {
+      ru: {
+        title: "Формулы Алгебры",
+        card1_title: "Дискриминант",
+        card1_text: "\\[ D = b^2 - 4ac \\]<br>Определяет количество корней квадратного уравнения.",
+        card2_title: "Квадратное уравнение",
+        card2_text: "\\[ ax^2 + bx + c = 0 \\]<br>Стандартная форма квадратного уравнения.",
+        card3_title: "Теорема Виета",
+        card3_text: "\\[ x_1 + x_2 = -\\frac{b}{a}, \\ x_1x_2 = \\frac{c}{a} \\]<br>Связь корней и коэффициентов.",
+        card4_title: "Арифметическая прогрессия",
+        card4_text: "\\[ a_n = a_1 + (n-1)d \\]<br>Формула n-го члена прогрессии.",
+        calculator_title: "Калькулятор дискриминанта",
+        calculate_button: "Рассчитать",
+        chatbot_title: "AI Ассистент по Алгебре",
+        chatbot_placeholder: "Задайте вопрос по алгебре...",
+        chatbot_send: "Отправить",
+        footer: "Создано для изучения алгебры | AI Хакатон 2025",
+        input_error: "Пожалуйста, введите все коэффициенты.",
+        a_zero_error: "Ошибка: коэффициент a не может быть равен нулю.",
+        two_roots: "Два корня: x₁ = {x1}, x₂ = {x2}.",
+        one_root: "Один корень: x = {x}.",
+        no_roots: "Нет вещественных корней.",
+        chatbot_empty: "Пожалуйста, введите вопрос.",
+        chatbot_error: "Ошибка при обращении к AI. Попробуйте позже."
+      },
+      en: {
+        title: "Algebra Formulas",
+        card1_title: "Discriminant",
+        card1_text: "\\[ D = b^2 - 4ac \\]<br>Determines the number of roots of a quadratic equation.",
+        card2_title: "Quadratic Equation",
+        card2_text: "\\[ ax^2 + bx + c = 0 \\]<br>Standard form of a quadratic equation.",
+        card3_title: "Vieta’s Theorem",
+        card3_text: "\\[ x_1 + x_2 = -\\frac{b}{a}, \\ x_1x_2 = \\frac{c}{a} \\]<br>Relationship between roots and coefficients.",
+        card4_title: "Arithmetic Progression",
+        card4_text: "\\[ a_n = a_1 + (n-1)d \\]<br>Formula for the nth term of the progression.",
+        calculator_title: "Discriminant Calculator",
+        calculate_button: "Calculate",
+        chatbot_title: "AI Algebra Assistant",
+        chatbot_placeholder: "Ask a question about algebra...",
+        chatbot_send: "Send",
+        footer: "Created for learning algebra | AI Hackathon 2025",
+        input_error: "Please enter all coefficients.",
+        a_zero_error: "Error: coefficient a cannot be zero.",
+        two_roots: "Two roots: x₁ = {x1}, x₂ = {x2}.",
+        one_root: "One root: x = {x}.",
+        no_roots: "No real roots.",
+        chatbot_empty: "Please enter a question.",
+        chatbot_error: "Error contacting AI. Try again later."
+      }
+    };
+
+    // Toggle Language
+    function toggleLanguage() {
+      const isEnglish = document.getElementById('language-toggle').checked;
+      const lang = isEnglish ? 'en' : 'ru';
+      document.documentElement.lang = lang;
+      document.querySelector('.language-slider').classList.toggle('checked', isEnglish);
+
+      // Update texts
+      document.querySelector('.title').textContent = translations[lang].title;
+      document.querySelectorAll('.card-front h2')[0].textContent = translations[lang].card1_title;
+      document.querySelectorAll('.card-back p')[0].innerHTML = translations[lang].card1_text;
+      document.querySelectorAll('.card-front h2')[1].textContent = translations[lang].card2_title;
+      document.querySelectorAll('.card-back p')[1].innerHTML = translations[lang].card2_text;
+      document.querySelectorAll('.card-front h2')[2].textContent = translations[lang].card3_title;
+      document.querySelectorAll('.card-back p')[2].innerHTML = translations[lang].card3_text;
+      document.querySelectorAll('.card-front h2')[3].textContent = translations[lang].card4_title;
+      document.querySelectorAll('.card-back p')[3].innerHTML = translations[lang].card4_text;
+      document.querySelector('.calculator h2').textContent = translations[lang].calculator_title;
+      document.querySelector('.calculator button').textContent = translations[lang].calculate_button;
+      document.querySelector('.chatbot h2').textContent = translations[lang].chatbot_title;
+      document.querySelector('#chat-input').placeholder = translations[lang].chatbot_placeholder;
+      document.querySelector('.chatbot button').textContent = translations[lang].chatbot_send;
+      document.querySelector('footer p').textContent = translations[lang].footer;
+
+      // Update MathJax
+      if (window.MathJax) {
+        MathJax.typeset();
+      }
+    }
+
+    // Toggle Theme
+    function toggleTheme() {
+      const isLightTheme = document.getElementById('theme-toggle').checked;
+      document.body.classList.toggle('theme-light', isLightTheme);
+      document.querySelector('.theme-slider').classList.toggle('checked', isLightTheme);
+    }
+
+    // Toggle Sidebar
+    function toggleSidebar() {
+      document.querySelector('.sidebar').classList.toggle('open');
+    }
+
+    // Card Flip
+    document.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('click', () => {
+        card.classList.toggle('flipped');
+      });
+    });
+
+    // Discriminant Calculator
+    function calculateDiscriminant() {
+      const a = parseFloat(document.getElementById('a').value);
+      const b = parseFloat(document.getElementById('b').value);
+      const c = parseFloat(document.getElementById('c').value);
+      const result = document.getElementById('result');
+      const lang = document.documentElement.lang || 'ru';
+
+      if (isNaN(a) || isNaN(b) || isNaN(c)) {
+        result.textContent = translations[lang].input_error;
+        return;
+      }
+
+      if (a === 0) {
+        result.textContent = translations[lang].a_zero_error;
+        return;
+      }
+
+      const D = b * b - 4 * a * c;
+      let output = `Discriminant: D = ${D}. `;
+
+      if (D > 0) {
+        const x1 = (-b + Math.sqrt(D)) / (2 * a);
+        const x2 = (-b - Math.sqrt(D)) / (2 * a);
+        output += translations[lang].two_roots.replace('{x1}', x1.toFixed(2)).replace('{x2}', x2.toFixed(2));
+      } else if (D === 0) {
+        const x = -b / (2 * a);
+        output += translations[lang].one_root.replace('{x}', x.toFixed(2));
+      } else {
+        output += translations[lang].no_roots;
+      }
+
+      result.textContent = output;
+    }
+
+    // Chatbot
+    async function sendChatMessage() {
+      const input = document.getElementById('chat-input');
+      const chatField = document.getElementById('chat-field');
+      const lang = document.documentElement.lang || 'ru';
+      const question = input.value.trim();
+
+      if (!question) {
+        chatField.innerHTML += `<div class="chat-message user-message">${translations[lang].chatbot_empty}</div>`;
+        chatField.scrollTop = chatField.scrollHeight;
+        return;
+      }
+
+      chatField.innerHTML += `<div class="chat-message user-message">${question}</div>`;
+      input.value = '';
+      chatField.scrollTop = chatField.scrollHeight;
+
+      // Задержка для избежания лимита
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      try {
+        const response = await fetch('https://cors-anywhere.herokuapp.com/https://api.grok.xai.com/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Bearer YOUR_REAL_API_KEY_HERE',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            model: 'grok-beta',
+            messages: [
+              {
+                role: 'system',
+                content: 'You are an expert algebra assistant. Provide accurate, concise answers to algebra-related questions, including explanations and examples where appropriate. Use LaTeX for mathematical expressions.'
+              },
+              {
+                role: 'user',
+                content: question
+              }
+            ],
+            max_tokens: 500,
+            temperature: 0.7
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        const answer = data.choices[0].message.content;
+
+        chatField.innerHTML += `<div class="chat-message bot-message">${answer}</div>`;
+        chatField.scrollTop = chatField.scrollHeight;
+
+        if (window.MathJax) {
+          MathJax.typeset();
+        }
+      } catch (error) {
+        console.error('Chatbot error:', error);
+        chatField.innerHTML += `<div class="chat-message bot-message">${translations[lang].chatbot_error} (${error.message})</div>`;
+        chatField.scrollTop = chatField.scrollHeight;
+      }
+    }
+
+    // Random Symbol Positioning
+    document.querySelectorAll('.math-bg span').forEach(span => {
+      const left = Math.random() * 98 + 1;
+      const top = Math.random() * 96 + 2;
+      span.style.left = `${left}%`;
+      span.style.top = `${top}%`;
+      span.style.animationDelay = `${Math.random() * 5}s`;
+    });
+
+    // Dynamic Symbol Generation
+    const symbols = ['π', '∑', '∞', '∫', 'σ', 'Δ', 'θ', '√', 'α', 'β', 'γ', 'λ', 'φ', 'ψ', 'ω', 'ε', 'ζ', 'η', 'κ', 'μ', 'ν', 'ρ', 'τ', 'χ', 'ξ', 'ι', 'ο', 'υ', 'δ', 'Γ', '%', '!', '/'];
+    function createDynamicSymbol() {
+      const mathBg = document.querySelector('.math-bg');
+      const span = document.createElement('span');
+      span.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+      span.style.left = `${Math.random() * 98 + 1}%`;
+      span.style.top = `${Math.random() * 96 + 2}%`;
+      span.style.animationDelay = `${Math.random() * 5}s`;
+      mathBg.appendChild(span);
+      span.addEventListener('animationend', () => {
+        span.remove();
+      });
+    }
+    setInterval(createDynamicSymbol, 5000);
+
+    // Initialize language to Russian
+    document.getElementById('language-toggle').checked = false;
+    toggleLanguage();
+  </script>
+</body>
+</html>
